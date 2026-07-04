@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import './LoginPage.css'
 import DonationWidget from '../DonationWidget'
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+
 export default function LoginPage() {
   const [authUrl, setAuthUrl] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -13,7 +15,7 @@ export default function LoginPage() {
 
   const fetchAuthUrl = async () => {
     try {
-      const response = await fetch('http://localhost:8000/auth/google/start')
+      const response = await fetch(`${API_URL}/auth/google/start`)
       if (!response.ok) throw new Error('Failed to get auth URL')
       const data = await response.json()
       setAuthUrl(data.auth_url)

@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: affirmations-api
+    env: python
+    plan: free
+    runtime: python-3.11
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DATABASE_URL
+        value: ${DATABASE_URL}
+      - key: GOOGLE_CLIENT_ID
+        value: ${GOOGLE_CLIENT_ID}
+      - key: GOOGLE_CLIENT_SECRET
+        value: ${GOOGLE_CLIENT_SECRET}
+      - key: GOOGLE_REDIRECT_URI
+        value: ${GOOGLE_REDIRECT_URI}
+      - key: SECRET_KEY
+        value: ${SECRET_KEY}
+      - key: SYNC_HOUR_UTC
+        value: "2"
+      - key: SYNC_MINUTE_UTC
+        value: "0"
+      - key: GOOGLE_API_DELAY_MS
+        value: "100"
+      - key: BATCH_SIZE
+        value: "50"
+    healthCheckPath: /

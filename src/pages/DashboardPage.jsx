@@ -4,6 +4,8 @@ import AffirmationCard from '../components/AffirmationCard'
 import CalendarPicker from '../components/CalendarPicker'
 import SyncStatus from '../components/SyncStatus'
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+
 export default function DashboardPage({ user }) {
   const [affirmations, setAffirmations] = useState([])
   const [selectedDate, setSelectedDate] = useState(new Date())
@@ -27,7 +29,7 @@ export default function DashboardPage({ user }) {
   const loadAffirmations = async () => {
     try {
       setLoading(true)
-      const response = await fetch('http://localhost:8000/affirmations/', {
+      const response = await fetch(`${API_URL}/affirmations/`, {
         headers: { 'X-User-ID': user.id }
       })
       if (!response.ok) throw new Error('Failed to load affirmations')
@@ -44,7 +46,7 @@ export default function DashboardPage({ user }) {
   const handleSync = async () => {
     try {
       setSyncing(true)
-      const response = await fetch('http://localhost:8000/calendar/sync', {
+      const response = await fetch(`${API_URL}/calendar/sync`, {
         method: 'POST',
         headers: { 'X-User-ID': user.id }
       })
@@ -62,7 +64,7 @@ export default function DashboardPage({ user }) {
 
   const handleUpdateAffirmation = async (id, text) => {
     try {
-      const response = await fetch(`http://localhost:8000/affirmations/${id}`, {
+      const response = await fetch(`${API_URL}/affirmations/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
