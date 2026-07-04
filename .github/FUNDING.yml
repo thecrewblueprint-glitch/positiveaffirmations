@@ -1,25 +1,4 @@
 # GitHub Funding Configuration
 # This displays sponsorship options on your repo's "Sponsor" button
 
-# Choose your preferred platforms (uncomment the ones you want)
-
-# GitHub Sponsors - Direct donations via GitHub
 github: [thecrewblueprint-glitch]
-
-# PayPal - $1, $2, $5 donations
-# custom: ["https://paypal.me/yourname"]
-
-# Stripe - Most flexible
-# custom: ["https://donate.stripe.com/your-link"]
-
-# Ko-fi - Simple donation page
-# custom: ["https://ko-fi.com/yourname"]
-
-# Buy Me a Coffee
-# custom: ["https://buymeacoffee.com/yourname"]
-
-# Patreon - Recurring support
-# patreon: yourname
-
-# Open Collective
-# open_collective: yourname
