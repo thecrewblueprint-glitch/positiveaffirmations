@@ -17,7 +17,11 @@ app = FastAPI(
 # CORS - restrict to known origins in production
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"] if settings.APP_ENV == "development" else ["https://yourdomain.com"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:8000",
+        "https://stupendous-dasik-0c8417.netlify.app",
+    ] if settings.APP_ENV == "production" else ["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
