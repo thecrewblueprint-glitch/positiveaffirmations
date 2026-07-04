@@ -1,0 +1,1 @@
+"""Daily Affirmations Calendar App."""
