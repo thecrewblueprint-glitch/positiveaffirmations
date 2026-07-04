@@ -88,7 +88,7 @@ def sync_user_affirmations(user_id: int, year: Optional[int] = None) -> dict:
         calendar_service = GoogleCalendarService(account, db)
 
         try:
-            calendar_service.list_calendars()
+            calendar_service.verify_access()
         except Exception as exc:
             logger.error(f"[User {user_id}] Calendar access failed: {exc}")
             return {"user_id": user_id, "status": "failed", "reason": "calendar_unavailable"}
@@ -100,28 +100,21 @@ def sync_user_affirmations(user_id: int, year: Optional[int] = None) -> dict:
         failed = 0
 
         for item in affirmations:
-            existing = (
-                db.query(CalendarEvent)
-                .join(CalendarEvent.affirmation)
+            existing_aff = (
+                db.query(Affirmation)
                 .filter(
-                    CalendarEvent.user_id == user_id,
+                    Affirmation.user_id == user_id,
                     Affirmation.affirmation_date == item["date"],
                 )
                 .first()
             )
 
-            if existing:
+            if existing_aff and existing_aff.calendar_event:
                 continue
 
-            affirmation = Affirmation(
-                user_id=user_id,
-                affirmation_date=item["date"],
-                text=item["text"],
-                theme=item["theme"],
-            )
-            db.add(affirmation)
-            db.flush()
-
+            # Create the calendar event first; only persist the affirmation
+            # once we have a real event to link it to.
+            event = None
             for attempt in range(3):
                 try:
                     event = calendar_service.create_daily_affirmation_event(
@@ -132,19 +125,7 @@ def sync_user_affirmations(user_id: int, year: Optional[int] = None) -> dict:
                         timezone="UTC",
                         all_day=True,
                     )
-
-                    link = CalendarEvent(
-                        user_id=user_id,
-                        affirmation_id=affirmation.id,
-                        google_event_id=event.get("id"),
-                        calendar_id=account.calendar_id,
-                        status="synced",
-                    )
-                    db.add(link)
-                    db.commit()
-                    synced += 1
                     break
-
                 except Exception as exc:
                     logger.warning(
                         f"[User {user_id}] Attempt {attempt + 1}/3 failed for {item['date']}: {exc}"
@@ -156,6 +137,30 @@ def sync_user_affirmations(user_id: int, year: Optional[int] = None) -> dict:
                         )
                     else:
                         time.sleep(2 ** attempt)
+
+            if event is None:
+                continue
+
+            affirmation = existing_aff or Affirmation(
+                user_id=user_id,
+                affirmation_date=item["date"],
+                text=item["text"],
+                theme=item["theme"],
+            )
+            if existing_aff is None:
+                db.add(affirmation)
+                db.flush()
+
+            link = CalendarEvent(
+                user_id=user_id,
+                affirmation_id=affirmation.id,
+                google_event_id=event.get("id"),
+                calendar_id=account.calendar_id,
+                status="synced",
+            )
+            db.add(link)
+            db.commit()
+            synced += 1
 
         registry.record_success(synced)
         logger.info(
@@ -226,7 +231,7 @@ def token_health_check():
         for account in accounts:
             try:
                 service = GoogleCalendarService(account, db)
-                service.list_calendars()
+                service.verify_access()
                 healthy += 1
             except Exception as exc:
                 logger.warning(f"[User {account.user_id}] Token health check failed: {exc}")

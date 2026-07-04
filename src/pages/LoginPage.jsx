@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
 import './LoginPage.css'
 import DonationWidget from '../DonationWidget'
-
-const API_URL = 'https://affirmations-api.onrender.com'
+import { API_URL } from '../api'
 
 export default function LoginPage() {
   const [authUrl, setAuthUrl] = useState(null)

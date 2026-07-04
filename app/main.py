@@ -14,15 +14,16 @@ app = FastAPI(
     redoc_url="/redoc" if settings.APP_ENV != "production" else None,
 )
 
-# CORS - restrict to known origins in production
+# CORS - restrict to known origins in production. Auth uses Bearer tokens
+# (Authorization header), not cookies, so credentials are not required.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "http://localhost:8000",
-        "https://stupendous-dasik-0c8417.netlify.app",
+        "http://localhost:5173",
+        settings.FRONTEND_URL,
     ] if settings.APP_ENV == "production" else ["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )

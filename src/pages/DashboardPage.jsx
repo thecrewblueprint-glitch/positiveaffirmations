@@ -3,8 +3,7 @@ import './DashboardPage.css'
 import AffirmationCard from '../components/AffirmationCard'
 import CalendarPicker from '../components/CalendarPicker'
 import SyncStatus from '../components/SyncStatus'
-
-const API_URL = 'https://affirmations-api.onrender.com'
+import { authFetch } from '../api'
 
 export default function DashboardPage({ user }) {
   const [affirmations, setAffirmations] = useState([])
@@ -29,9 +28,7 @@ export default function DashboardPage({ user }) {
   const loadAffirmations = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`${API_URL}/affirmations/`, {
-        headers: { 'X-User-ID': user.id }
-      })
+      const response = await authFetch('/affirmations/')
       if (!response.ok) throw new Error('Failed to load affirmations')
       const data = await response.json()
       setAffirmations(data)
@@ -46,14 +43,13 @@ export default function DashboardPage({ user }) {
   const handleSync = async () => {
     try {
       setSyncing(true)
-      const response = await fetch(`${API_URL}/calendar/sync`, {
-        method: 'POST',
-        headers: { 'X-User-ID': user.id }
-      })
+      const response = await authFetch('/calendar/sync', { method: 'POST' })
       if (!response.ok) throw new Error('Sync failed')
-      setSyncStatus({ success: true, message: 'Affirmations synced to Google Calendar!' })
-      loadAffirmations()
-      setTimeout(() => setSyncStatus(null), 3000)
+      setSyncStatus({ success: true, message: 'Sync started! Events are being added to your calendar.' })
+      setTimeout(() => {
+        loadAffirmations()
+        setSyncStatus(null)
+      }, 5000)
     } catch (err) {
       setSyncStatus({ success: false, message: 'Sync failed. Please try again.' })
       console.error(err)
@@ -64,12 +60,9 @@ export default function DashboardPage({ user }) {
 
   const handleUpdateAffirmation = async (id, text) => {
     try {
-      const response = await fetch(`${API_URL}/affirmations/${id}`, {
+      const response = await authFetch(`/affirmations/${id}`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-User-ID': user.id
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text })
       })
       if (!response.ok) throw new Error('Update failed')

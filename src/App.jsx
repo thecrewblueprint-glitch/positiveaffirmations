@@ -1,63 +1,47 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import LoginPage from './pages/LoginPage'
 import DashboardPage from './pages/DashboardPage'
 import Header from './components/Header'
-
-const API_URL = 'https://affirmations-api.onrender.com'
+import { getToken, setToken, clearToken, authFetch } from './api'
 
 export default function App() {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    checkAuthStatus()
+    init()
   }, [])
 
-  const checkAuthStatus = async () => {
+  const init = async () => {
     try {
+      // The OAuth callback redirects back here with ?token=<jwt>.
       const params = new URLSearchParams(window.location.search)
-      const code = params.get('code')
-      const state = params.get('state')
+      const urlToken = params.get('token')
+      if (urlToken) {
+        setToken(urlToken)
+        window.history.replaceState({}, document.title, '/')
+      }
 
-      if (code && state) {
-        await handleCallback(code, state)
-      } else {
-        const stored = localStorage.getItem('user')
-        if (stored) {
-          setUser(JSON.parse(stored))
+      if (getToken()) {
+        const res = await authFetch('/auth/me')
+        if (res.ok) {
+          setUser(await res.json())
+        } else {
+          clearToken()
         }
       }
     } catch (error) {
-      console.error('Auth check failed:', error)
+      console.error('Auth init failed:', error)
+      clearToken()
     } finally {
       setLoading(false)
     }
   }
 
-  const handleCallback = async (code, state) => {
-    try {
-      const response = await fetch(`${API_URL}/auth/google/callback`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, state }),
-      })
-
-      if (!response.ok) throw new Error('Auth failed')
-
-      const userData = await response.json()
-      setUser(userData)
-      localStorage.setItem('user', JSON.stringify(userData))
-      window.history.replaceState({}, document.title, '/')
-    } catch (error) {
-      console.error('Callback error:', error)
-      setLoading(false)
-    }
-  }
-
   const handleLogout = () => {
+    clearToken()
     setUser(null)
-    localStorage.removeItem('user')
   }
 
   if (loading) {

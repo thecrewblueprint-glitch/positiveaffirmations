@@ -69,8 +69,25 @@ class GoogleCalendarService:
             self._service = build("calendar", "v3", credentials=credentials)
         return self._service
 
+    def verify_access(self) -> Dict[str, Any]:
+        """Lightweight check that the token can reach the Calendar API.
+
+        Uses events.list (permitted by the calendar.events scope) rather than
+        calendarList.list (which requires a broader scope we don't request).
+        """
+        return (
+            self._get_service()
+            .events()
+            .list(calendarId="primary", maxResults=1)
+            .execute()
+        )
+
     def list_calendars(self) -> Dict[str, Any]:
-        """List calendars accessible to the user."""
+        """List calendars accessible to the user.
+
+        NOTE: requires the calendar.readonly/calendar scope, which this app
+        does not request. Kept for reference; prefer verify_access().
+        """
         return self._get_service().calendarList().list().execute()
 
     def create_daily_affirmation_event(

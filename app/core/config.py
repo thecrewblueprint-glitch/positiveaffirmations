@@ -27,6 +27,12 @@ class Settings(BaseSettings):
         description="Must match redirect URI in Google Cloud Console"
     )
 
+    # Frontend origin the OAuth callback redirects back to after login
+    FRONTEND_URL: str = Field(
+        default="https://stupendous-dasik-0c8417.netlify.app",
+        description="SPA origin; callback redirects here with a session token"
+    )
+
     # App Settings
     APP_NAME: str = "Daily Affirmations"
     APP_ENV: str = Field(default="development", pattern="^(development|staging|production)$")
