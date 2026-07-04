@@ -15,9 +15,12 @@ export default function App() {
 
   const init = async () => {
     try {
-      // The OAuth callback redirects back here with ?token=<jwt>.
-      const params = new URLSearchParams(window.location.search)
-      const urlToken = params.get('token')
+      // The OAuth callback redirects back here with the token in the URL
+      // fragment: #token=<jwt>.
+      const hash = window.location.hash.startsWith('#')
+        ? window.location.hash.slice(1)
+        : window.location.hash
+      const urlToken = new URLSearchParams(hash).get('token')
       if (urlToken) {
         setToken(urlToken)
         window.history.replaceState({}, document.title, '/')

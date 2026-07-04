@@ -1,5 +1,12 @@
 """Google OAuth authentication routes with JWT session issuance."""
 
+import os
+
+# Google echoes granted scopes (e.g. adds 'openid') in a different set than we
+# request, which makes oauthlib's strict scope check raise inside fetch_token.
+# Relaxing it lets the token exchange complete.
+os.environ.setdefault("OAUTHLIB_RELAX_TOKEN_SCOPE", "1")
+
 import httpx
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import RedirectResponse
@@ -18,7 +25,14 @@ from app.models.google_account import GoogleAccount
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
-SCOPES = ["https://www.googleapis.com/auth/calendar.events"]
+# Identity scopes are required to read the user's email/name at callback;
+# calendar.events is required to create their affirmation events.
+SCOPES = [
+    "openid",
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/userinfo.profile",
+    "https://www.googleapis.com/auth/calendar.events",
+]
 
 
 def _get_flow(state: str | None = None) -> Flow:
@@ -116,9 +130,11 @@ def google_auth_callback(
 
     db.commit()
 
-    # Issue session token and hand the browser back to the SPA.
+    # Issue session token and hand the browser back to the SPA. The token goes
+    # in the URL fragment (#), which browsers never send to servers or in the
+    # Referer header, unlike a query string.
     session_token = create_access_token(user.id)
-    redirect_url = f"{settings.FRONTEND_URL}/?token={session_token}"
+    redirect_url = f"{settings.FRONTEND_URL}/#token={session_token}"
     return RedirectResponse(url=redirect_url)
 
 
