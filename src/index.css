@@ -1,0 +1,82 @@
+/* Crew Blueprint Color System */
+:root {
+  --cb-black: #050708;
+  --cb-charcoal: #0E1216;
+  --cb-graphite: #151A20;
+  --cb-iron: #1F262E;
+
+  --cb-gold: #F5B400;
+  --cb-amber: #FFCF3A;
+  --cb-orange: #D97812;
+
+  --cb-white: #F4F6F8;
+  --cb-gray: #AEB6C2;
+  --cb-muted: #737D8A;
+
+  --cb-border: #2C343D;
+  --cb-border-gold: #C99300;
+
+  --cb-success: #4CC66A;
+  --cb-warning: #FFC400;
+  --cb-error: #D64545;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--cb-black);
+  color: var(--cb-white);
+  line-height: 1.6;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  transition: all 150ms ease;
+}
+
+input, textarea, select {
+  font-family: inherit;
+  color: var(--cb-white);
+  background-color: var(--cb-graphite);
+  border: 1px solid var(--cb-border);
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 150ms ease;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--cb-gold);
+  box-shadow: 0 0 0 2px rgba(245, 180, 0, 0.1);
+}
+
+a {
+  color: var(--cb-gold);
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+a:hover {
+  color: var(--cb-amber);
+}

@@ -1,0 +1,128 @@
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--cb-black) 0%, var(--cb-charcoal) 100%);
+  padding: 20px;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.login-content h1 {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-align: center;
+  color: var(--cb-white);
+}
+
+.tagline {
+  text-align: center;
+  color: var(--cb-gray);
+  font-size: 16px;
+  margin-bottom: 32px;
+}
+
+.login-box {
+  background-color: var(--cb-graphite);
+  border: 1px solid var(--cb-border);
+  border-radius: 12px;
+  padding: 32px;
+}
+
+.login-box h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--cb-white);
+}
+
+.login-box > p {
+  color: var(--cb-gray);
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 12px 24px;
+  background-color: var(--cb-gold);
+  color: var(--cb-black);
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  margin-bottom: 24px;
+  transition: all 150ms ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--cb-amber);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(245, 180, 0, 0.2);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error-message {
+  background-color: rgba(214, 69, 69, 0.1);
+  border: 1px solid var(--cb-error);
+  color: var(--cb-error);
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 24px;
+  border-top: 1px solid var(--cb-border);
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--cb-gray);
+}
+
+.feature-icon {
+  font-size: 20px;
+}
+
+.login-footer {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: var(--cb-gray);
+  font-size: 12px;
+}
+
+@media (max-width: 600px) {
+  .login-content h1 {
+    font-size: 36px;
+  }
+
+  .login-box {
+    padding: 24px;
+  }
+}

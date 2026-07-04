@@ -1,0 +1,136 @@
+.affirmation-card {
+  background: linear-gradient(135deg, var(--cb-graphite) 0%, var(--cb-iron) 100%);
+  border: 1px solid var(--cb-border);
+  border-radius: 12px;
+  padding: 32px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.view-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.affirmation-text {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.8;
+  color: var(--cb-white);
+  margin: 0;
+}
+
+.affirmation-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.theme-badge {
+  background-color: rgba(245, 180, 0, 0.1);
+  color: var(--cb-gold);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.btn-edit {
+  padding: 8px 16px;
+  background-color: var(--cb-gold);
+  color: var(--cb-black);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: auto;
+  transition: all 150ms ease;
+}
+
+.btn-edit:hover {
+  background-color: var(--cb-amber);
+  transform: translateY(-1px);
+}
+
+.edit-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.edit-textarea {
+  width: 100%;
+  padding: 16px;
+  background-color: var(--cb-black);
+  color: var(--cb-white);
+  border: 1px solid var(--cb-border);
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: inherit;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.edit-textarea:focus {
+  outline: none;
+  border-color: var(--cb-gold);
+  box-shadow: 0 0 0 2px rgba(245, 180, 0, 0.1);
+}
+
+.edit-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-save,
+.btn-cancel {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 150ms ease;
+}
+
+.btn-save {
+  background-color: var(--cb-success);
+  color: var(--cb-black);
+}
+
+.btn-save:hover {
+  background-color: #5dd97a;
+  transform: translateY(-1px);
+}
+
+.btn-cancel {
+  background-color: var(--cb-error);
+  color: var(--cb-white);
+}
+
+.btn-cancel:hover {
+  background-color: #e15959;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 600px) {
+  .affirmation-card {
+    padding: 20px;
+  }
+
+  .affirmation-text {
+    font-size: 18px;
+  }
+
+  .affirmation-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn-edit {
+    margin-left: 0;
+    width: 100%;
+  }
+}

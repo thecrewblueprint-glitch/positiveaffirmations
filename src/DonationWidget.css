@@ -1,0 +1,27 @@
+.donation-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  background: rgba(245, 180, 0, 0.1);
+  color: var(--cb-gold);
+  border: 1px solid rgba(245, 180, 0, 0.3);
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 150ms ease;
+  text-decoration: none;
+}
+
+.donation-button:hover {
+  background: rgba(245, 180, 0, 0.2);
+  border-color: rgba(245, 180, 0, 0.5);
+  color: var(--cb-amber);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 480px) {
+  .donation-button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
