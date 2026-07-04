@@ -4,7 +4,7 @@ import AffirmationCard from '../components/AffirmationCard'
 import CalendarPicker from '../components/CalendarPicker'
 import SyncStatus from '../components/SyncStatus'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_URL = 'https://affirmations-api.onrender.com'
 
 export default function DashboardPage({ user }) {
   const [affirmations, setAffirmations] = useState([])

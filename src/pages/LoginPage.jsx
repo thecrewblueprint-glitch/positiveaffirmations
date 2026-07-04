@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import './LoginPage.css'
 import DonationWidget from '../DonationWidget'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_URL = 'https://affirmations-api.onrender.com'
 
 export default function LoginPage() {
   const [authUrl, setAuthUrl] = useState(null)

@@ -4,7 +4,7 @@ import LoginPage from './pages/LoginPage'
 import DashboardPage from './pages/DashboardPage'
 import Header from './components/Header'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_URL = 'https://affirmations-api.onrender.com'
 
 export default function App() {
   const [user, setUser] = useState(null)
